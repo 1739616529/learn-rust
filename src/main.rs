@@ -1,37 +1,28 @@
-use std::{
-    io::{prelude::*, BufReader},
-    net::{TcpListener, TcpStream},
-};
+use mini_redis::{Connection, Frame};
+use tokio::{net::{TcpListener, TcpStream}, spawn};
 
-use learn_rust::ThreadPool;
-fn main() {
-    let proxy_server = TcpListener::bind("127.0.0.1:5551").unwrap();
 
-    let pool = ThreadPool::bind(4);
+#[tokio::main]
+async fn main() {
+    let listener: TcpListener = TcpListener::bind("127.0.0.1:9877").await.unwrap();
+    loop {
+        let (socket, _) = listener.accept().await.unwrap();
 
-    for stream in proxy_server.incoming().take(2) {
-        let stream = stream.unwrap();
-
-        pool.execute(|| {
-            handle_connection(stream);
-        })
-
+        spawn(async move {
+            process(socket).await
+        });
     }
 }
 
-fn handle_connection(mut stream: TcpStream) {
-    let buf_reader = BufReader::new(&mut stream);
+async fn process(socket: TcpStream) {
 
-    let http_request: Vec<_> = buf_reader
-        .lines()
-        .map(|result| result.unwrap())
-        .take_while(|line| !line.is_empty())
-        .collect();
+    
+    let mut connent = Connection::new(socket);
 
-    let response = "HTTP/1.1 200 OK\r\n\r\n ";
+    if let Some(frame) = connent.read_frame().await.unwrap() {
+        println!("GOT: {:?}", frame);
 
-    stream.write_all(response.as_bytes()).unwrap();
-    // stream.all
-
-    println!("Request: {:?}", http_request);
+        let response = Frame::Error("unimplemented".to_string());
+        connent.write_frame(&response).await.unwrap();
+    }
 }

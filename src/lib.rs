@@ -10,7 +10,7 @@ pub struct ThreadPool {
 }
 
 impl ThreadPool {
-    pub fn bind(size: usize) -> Self {
+    pub fn bind(size: usize) -> Self { 
         let mut workers = Vec::with_capacity(size);
 
         let (sender, receiver) = mpsc::channel();
