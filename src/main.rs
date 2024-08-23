@@ -1,28 +1,26 @@
-use mini_redis::{Connection, Frame};
-use tokio::{net::{TcpListener, TcpStream}, spawn};
 
-
-#[tokio::main]
-async fn main() {
-    let listener: TcpListener = TcpListener::bind("127.0.0.1:9877").await.unwrap();
-    loop {
-        let (socket, _) = listener.accept().await.unwrap();
-
-        spawn(async move {
-            process(socket).await
-        });
-    }
-}
-
-async fn process(socket: TcpStream) {
-
+fn main() {
     
-    let mut connent = Connection::new(socket);
+    #[cfg(all(target_os = "windows", target_arch = "x86_64"))]
+    println!("this is windows x64 platform");
+    #[cfg(all(target_os = "windows", target_arch = "x86"))]
+    println!("this is windows x86 platform");
+    #[cfg(all(target_os = "windows", target_arch = "aarch64"))]
+    println!("this is windows aarch64 platform");
 
-    if let Some(frame) = connent.read_frame().await.unwrap() {
-        println!("GOT: {:?}", frame);
+    #[cfg(all(target_os = "macos", target_arch = "x86_64"))]
+    println!("this is macos x64 platform");
+    #[cfg(all(target_os = "macos", target_arch = "x86"))]
+    println!("this is macos x86 platform");
+    #[cfg(all(target_os = "macos", target_arch = "aarch64"))]
+    println!("this is macos aarch64 platform");
 
-        let response = Frame::Error("unimplemented".to_string());
-        connent.write_frame(&response).await.unwrap();
-    }
+    #[cfg(all(target_os = "linux", target_arch = "x86_64"))]
+    println!("this is linux x64 platform");
+    #[cfg(all(target_os = "linux", target_arch = "x86"))]
+    println!("this is linux x86 platform");
+    #[cfg(all(target_os = "linux", target_arch = "aarch64"))]
+    println!("this is linux aarch64 platform");
+
+
 }
