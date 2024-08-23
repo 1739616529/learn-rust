@@ -12,11 +12,13 @@ jobs:
       BINARY_NAME: rust-test1
     steps:
       - uses: actions/checkout@v2
-      - name: Build-musl macOS x86
-        uses: shogan/rust-musl-action@master
-        with:
-          args: cargo build --target x86_64-apple-darwin --release
-      - name: Build-musl Linux x86
-        uses: shogan/rust-musl-action@master
-        with:
-          args: cargo build --target aarch64-unknown-linux-musl --release
+      - name: install cross-rs
+        run: cargo install cross --git https://github.com/cross-rs/cross
+      - name: build
+        run: |
+          cross build --target aarch64-unknown-linux-musl
+          cross build --target i586-unknown-linux-musl
+          cross build --target x86_64-unknown-linux-musl
+          cross build --target i686-pc-windows-gnu
+          cross build --target x86_64-pc-windows-gnu
+
