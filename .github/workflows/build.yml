@@ -17,8 +17,13 @@ jobs:
       - name: build
         run: |
           cross build --target aarch64-unknown-linux-musl
-          cross build --target i586-unknown-linux-musl
+          cross build --target i686-unknown-linux-musl
           cross build --target x86_64-unknown-linux-musl
           cross build --target i686-pc-windows-gnu
           cross build --target x86_64-pc-windows-gnu
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nsv.exe
+          path: ./target/x86_64-pc-windows-gnu/${{ env.BINARY_NAME }}
 
