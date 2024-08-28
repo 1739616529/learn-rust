@@ -24,5 +24,4 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: nsv.exe
-          path: ./target/x86_64-pc-windows-gnu/release/lerna-rust.exe
-
+          path: ./target/x86_64-pc-windows-gnu/release/learn-rust.exe
