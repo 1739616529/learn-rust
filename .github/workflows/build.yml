@@ -23,5 +23,25 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: nsv.exe
+          name: nsv-aarch64-linux-musl
+          path: ./target/aarch64-unknown-linux-musl/release/learn-rust
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nsv-x86-linux-musl
+          path: ./target/i686-unknown-linux-musl/release/learn-rust
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nsv-x64-linux-musl
+          path: ./target/x86_64-unknown-linux-musl/release/learn-rust
+      
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nsv-x86-windows-gnu.exe
+          path: ./target/i686-pc-windows-gnu/release/learn-rust.exe
+  
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nsv-x64-windows-gnu.exe
           path: ./target/x86_64-pc-windows-gnu/release/learn-rust.exe
