@@ -9,7 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CARGO_TERM_COLOR: always
-      BINARY_NAME: rust-test1
     steps:
       - uses: actions/checkout@v2
       - name: install cross-rs
@@ -25,5 +24,5 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: nsv.exe
-          path: ./target/x86_64-pc-windows-gnu/${{ env.BINARY_NAME }}
+          path: ./target/x86_64-pc-windows-gnu/lerna-rust.exe
 
